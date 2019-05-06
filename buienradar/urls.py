@@ -1,6 +1,9 @@
 """(functions that generate) URL's to access the buienradar api."""
 JSON_FEED_URL = 'https://data.buienradar.nl/2.0/feed/json'
-XML_FEED_URL = 'https://xml.buienradar.nl/'
+# https://xml.buienradar.nl redirects to:
+XML_FEED_URL = 'https://data.buienradar.nl/1.0/feed/xml'
+# currently also redirects to the above URL, but kept since the fallback
+# behaviour exists.
 XML_SECONDARY_FEED_URL = 'https://api.buienradar.nl/'
 
 JSON_PRECIPITATION_URL_TEMPLATE = (
@@ -38,9 +41,9 @@ def radar_url(width: int = 500, height: int = 512) -> str:
     :param width width of output (120 <= w <= 700)
     :param height height of output (120 <= h <= 765)
     """
-    if width < 120 or width > 700:
+    if not 120 <= width <= 700:
         raise ValueError("Illegal width, valid range: 120-700")
-    if height < 120 or height > 765:
+    if not 120 <= height <= 765:
         raise ValueError("Illegal height, valid rang: 120-765")
 
     return RADAR_URL_TEMPLATE.format(w=width, h=height)
